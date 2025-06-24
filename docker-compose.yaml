@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+    service-a:
+        build: 
+          context: ./service-a
+          dockerfile: Dockerfile
+        env_file: .env
+        ports:
+        - "8080:8080"
+        depends_on:
+        - service-b
+        - zipkin
+
+    service-b:
+        build: 
+          context: ./service-b
+          dockerfile: Dockerfile
+        env_file: .env
+        ports:
+        - "8081:8081"
+        depends_on:
+        - zipkin
+
+    otel-collector:
+        image: otel/opentelemetry-collector:latest
+        command: ["--config=/etc/otel-collector-config.yaml"]
+        volumes:
+        - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+        ports:
+        - "4317:4317"  # OTLP gRPC
+        - "55681:55681"
+        - "8888:8888"  # Metrics
+        depends_on:
+        - zipkin
+
+    zipkin:
+        image: openzipkin/zipkin
+        ports:
+        - "9411:9411"
+
