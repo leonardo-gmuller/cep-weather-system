@@ -41,15 +41,6 @@ Use `.env-template`
 
 > 🔧 Update the values as needed based on whether you're running inside or outside Docker.
 
----
-
-### Run only Zipkin and OpenTelemetry Collector
-
-```bash
-docker-compose up -d otel-collector zipkin
-```
-
-> 💡 Use this command if you're running services A and B manually on your machine (outside Docker).
 
 ---
 
@@ -70,6 +61,8 @@ docker-compose up --build
 ### Service A
 
 - `POST /service-a/v1/validate-cep`
+
+- Example: `http://localhost:8080/service-a/v1/validate-cep`
 
 **Request body:**
 
